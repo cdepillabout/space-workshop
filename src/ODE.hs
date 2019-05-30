@@ -75,8 +75,11 @@ eulerStepDouble
   -> ((Double, Double) -> Double)  -- ^ Gradient function @f (t, x)@
   -> (Double, Double)              -- ^ Time and state before the step @(t, x)@
   -> (Double, Double)              -- ^ Time and state after the step @(t, x)@
-eulerStepDouble -- h f q@(t, x)
-  = todo (FallbackSolution Solutions.ODE.eulerStepDouble)
+-- eulerStepDouble = todo (FallbackSolution Solutions.ODE.eulerStepDouble)
+eulerStepDouble h f (t, x) =
+  let tNext = t + h
+      xNext = x + h * f (t, x)
+  in (tNext, xNext)
 
 
 -- | Integrate an ODE using Euler's method (specialized to 'Double').
@@ -96,8 +99,9 @@ integrateEulerDouble
   -> Double                        -- ^ Initial state @x0@
   -> NonEmpty Double               -- ^ NonEmpty of @t@ values
   -> NonEmpty (Double, Double)     -- ^ NonEmpty of @(t, x)@ values
-integrateEulerDouble -- f x0 (t0 :| ts)
-  = todo (FallbackSolution Solutions.ODE.integrateEulerDouble)
+-- integrateEulerDouble -- f x0 (t0 :| ts)
+--   = todo (FallbackSolution Solutions.ODE.integrateEulerDouble)
+integrateEulerDouble f x0 (t0 :| ts) =
   {- Template:
   let
     stepFn :: (Double, Double) -> Double -> (Double, Double)
@@ -105,6 +109,13 @@ integrateEulerDouble -- f x0 (t0 :| ts)
   in
     NonEmpty.scanl stepFn (t0, x0) ts
   -}
+  let
+    stepFn :: (Double, Double) -> Double -> (Double, Double)
+    stepFn (timeStart, currX) timeEnd =
+      let h = timeEnd - timeStart
+      in eulerStepDouble h f (timeStart, currX)
+  in
+  NonEmpty.scanl stepFn (t0, x0) ts
 
 
 -- | Linearly-spaced samples.
