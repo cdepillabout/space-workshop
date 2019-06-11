@@ -146,16 +146,22 @@ linspace n xStart xEnd =
 -- >>> f (_, x) = linear $ \dt -> -0.2 * x * dt
 -- >>> eulerStep 1 f (2, 5)
 -- (3.0,4.0)
-eulerStep
-  :: ( AffineSpace state
-     , diff ~ Diff state, VectorSpace diff
-     , HasBasis time, HasTrie (Basis time)
-     , s ~ Scalar diff, s ~ Scalar time )
-  => time                              -- ^ Step size @h@
-  -> ((time, state) -> time :-* diff)  -- ^ Gradient function @f (x, t)@
-  -> (time, state)                     -- ^ Before the step @(t, x)@
-  -> (time, state)                     -- ^ After the step @(t, x)@
-eulerStep -- h f (t, x)
+eulerStep ::
+     ( AffineSpace state
+     , diff ~ Diff state
+     , VectorSpace diff
+     , HasBasis time
+     , HasTrie (Basis time)
+     , s ~ Scalar diff
+     , s ~ Scalar time
+     )
+  => time -- ^ Step size @h@
+  -> ((time, state) -> time :-* diff) -- ^ Gradient function @f (x, t)@
+  -> (time, state) -- ^ Before the step @(t, x)@
+  -> (time, state) -- ^ After the step @(t, x)@
+-- eulerStep -- h f (t, x)
+--   = todo (FallbackSolution Solutions.ODE.eulerStep)
+eulerStep h f (t, x)
   = todo (FallbackSolution Solutions.ODE.eulerStep)
 
 
